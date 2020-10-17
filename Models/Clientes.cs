@@ -9,6 +9,6 @@ namespace web_api_db.Models{
         public string direccion {get;set;}
         public string telefono {get;set;}
         public string fecha_nacimiento {get;set;}
-        public string fecha_ingreso {get;set;}
+       
     }
 }
