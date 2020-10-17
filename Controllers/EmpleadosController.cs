@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using web_api_db.Models; 
+using System.Threading.Tasks;
 namespace web_api_db.Controllers{
     [Route("api/[controller]")]
     public class EmpleadosController : Controller{
@@ -14,8 +15,8 @@ namespace web_api_db.Controllers{
         return Ok(dbConexion.Empleados.ToArray());
     }
     [HttpGet("{id}")]
-    public ActionResult Get(int id){
-        var empleados = dbConexion.Empleados.SingleOrDefault(a => a.id_empleados == id);
+    public async Task<ActionResult> Get(int id){
+        var empleados = await dbConexion.Empleados.FindAsync(id);
         if (empleados !=null){
             return Ok(empleados);
         }else{
@@ -23,11 +24,12 @@ namespace web_api_db.Controllers{
             }
         }
 
+//agregar 
     [HttpPost]
-        public ActionResult Post([FromBody] Empleados empleados){
+        public async Task<ActionResult> Post([FromBody] Empleados empleados){
             if (ModelState.IsValid){
                 dbConexion.Empleados.Add(empleados);
-                dbConexion.SaveChanges();
+                await dbConexion.SaveChangesAsync();
                 return Ok(empleados);
             }else{
                 return NotFound();
@@ -35,11 +37,11 @@ namespace web_api_db.Controllers{
 
         }
        [HttpPut] 
-       public ActionResult Put([FromBody] Empleados empleados){
-           var v_empleados = dbConexion.Empleados.SingleOrDefault(a => a.id_empleados == empleados.id_empleados);
+       public async Task<ActionResult> Put([FromBody] Empleados empleados){
+           var v_empleados = dbConexion.Empleados.SingleOrDefault(a => a.id_empleado == empleados.id_empleado);
            if (v_empleados !=null && ModelState.IsValid){
                dbConexion.Entry(v_empleados).CurrentValues.SetValues(empleados);
-               dbConexion.SaveChanges();
+                await dbConexion.SaveChangesAsync();
                return Ok();
            }else {
                return NotFound();
@@ -47,11 +49,11 @@ namespace web_api_db.Controllers{
        }
 
         [HttpDelete("{id}")]
-       public ActionResult Delete(int id){
-           var empleados = dbConexion.Empleados.SingleOrDefault(a => a.id_empleados == id);
+       public async Task<ActionResult> Delete(int id){
+           var empleados = dbConexion.Empleados.SingleOrDefault(a => a.id_empleado == id);
            if(empleados !=null){
                dbConexion.Empleados.Remove(empleados);
-               dbConexion.SaveChanges();
+               await dbConexion.SaveChangesAsync();
                return Ok();
 
            }else {

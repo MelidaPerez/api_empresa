@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 namespace web_api_db.Models{
     public class Empleados{
         [Key]
-        public int id_empleados {get;set;}
+        public int id_empleado {get;set;}
         public string codigo {get;set;}
         public string nombres {get;set;}
         public string apellidos {get;set;}
